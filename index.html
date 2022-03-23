@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>To-Do App</title>
+   <link rel="stylesheet" href="styles.css">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400;1,700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+   <script src="https://unpkg.com/phosphor-icons"></script>
+</head>
+
+<body>
+   <div class="wrapper">
+      <main class="main_style">
+
+         <nav>
+            <section class="switchTheme">
+               <button class="iconNight ">
+                  <i class="ph-moon-stars-fill jello"></i>
+                  <figcaption>Night</figcaption>
+               </button>
+               <button class="iconDay">
+                  <i class="ph-sun-fill jello"></i>
+                  <figcaption>Day</figcaption>
+               </button>
+            </section>
+         </nav>
+
+         <header>
+            <h1>Today I will...</h1>
+         </header>
+
+         <section class="inputTasks">
+            <input type="text" name="tasks" id="typetask" placeholder="check all my tasks!">
+            <button id="addtask">Add</button>
+         </section>
+
+         <section class="alerts">
+            Every task added will be shown here.
+         </section>
+
+         <section class="renderedList">
+            <ul id="listTasks">
+            </ul>
+         </section>
+         <button class="clearAll">
+            <i class="ph-x-square-fill"></i> Clear All
+         </button>
+   </div>
+
+   </main>
+   <script src="./scripts/theme.js"></script>
+   <script src="./scripts/todo.js"></script>
+
+</body>
+
+</html>

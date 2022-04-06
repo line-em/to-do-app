@@ -124,6 +124,8 @@ body {
 	font: 500 1rem/1.5 var(--serif);
 	color: var(--spacecadet);
 	text-rendering: optimizeSpeed;
+	word-break: break-word;
+	overflow-wrap: break-word;
 }
 
 /*container layout*/
@@ -215,6 +217,14 @@ nav {
 	vertical-align: sub;
 }
 
+.ph-clock-fill {
+	display: inline;
+	color: var(--mirtilo);
+	font-size: 0.9rem;
+	padding-bottom: 0.15rem;
+	vertical-align: middle;
+}
+
 h1::before,
 .alerts::before {
 	display: inline-block;
@@ -268,6 +278,16 @@ li {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+}
+
+.time {
+	border-radius: var(--base-value);
+	margin-top: var(--tiny-value);
+	padding: 0.2rem;
+	font: 0.85rem var(--sans);
+	color: var(--mirtilo);
+	background: var(--transparency);
+	max-width: calc(fit-content + 10rem);
 }
 
 /* input */
@@ -365,8 +385,8 @@ nav button:disabled {
 
 	nav {
 		margin: auto 0;
-		display: flex;
-		justify-content: flex-end;
+		/* display: flex;
+		justify-content: flex-end; */
 	}
 
 	h1 {

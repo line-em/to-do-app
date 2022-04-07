@@ -5,20 +5,24 @@ const inputTask = document.getElementById("typetask");
 // Event Listeners
 const pushButton = document.getElementById("addtask");
 const clearAllButton = document.querySelector(".clearAll");
+
 // Local Storage
-// const savedTasks = localStorage.getItem("tasks");
 const savedIds = JSON.parse(localStorage.getItem("tasksId"));
 const savedTasks = JSON.parse(localStorage.getItem("tasks"));
 const savedTimestamps = JSON.parse(localStorage.getItem("timestamps"));
+
 // Other Variables
+// Store tasks and their info.
 let allTasks = [];
 let allIds = [];
 let allTimestamps = [];
 
-// Functions
+// Helper Functions
+// Create DOM element with task data gotten from the input (renderTask)
 const createTasks = (task, id, time) => {
 	let newTask = document.createElement("li");
 	tasksContainer.appendChild(newTask);
+	newTask.id = id;
 	newTask.innerHTML = `
 		<div>
 		<label class="tasks">
@@ -30,9 +34,9 @@ const createTasks = (task, id, time) => {
 		</p>
 		</div>
         <i class="ph-trash-fill jello"></i>`;
-	newTask.id = id;
 };
 
+// Button to clear everything
 const clearAllTasks = () => {
 	if (allTasks.length <= 2) {
 		clearAllButton.style.display = "none";
@@ -47,62 +51,84 @@ const clearAllTasks = () => {
 	}
 };
 
+// Delete Task
 const deleteTask = () => {
 	const deleteButton = document.querySelectorAll(".ph-trash-fill");
+	let click = true;
 	for (let i = 0; i < deleteButton.length; i++) {
 		deleteButton[i].addEventListener("click", function () {
-			let deleteParentId = deleteButton[i].parentElement.id;
-			let deleteParentIdInteger = Number(deleteParentId);
-			let taskIndex = allIds.indexOf(deleteParentIdInteger);
+			if (click) {
+				let deleteParentId = deleteButton[i].parentElement.id;
+				let deleteParentIdInteger = Number(deleteParentId);
+				let taskIndex = allIds.indexOf(deleteParentIdInteger);
 
-			// For debuggin
-			// console.log(parentId);
-			// console.log(taskIndex);
+				console.log(taskIndex);
+				console.log(allTasks);
+				console.log(allTasks[taskIndex]);
 
-			allTasks.splice(taskIndex, 1);
-			allIds.splice(taskIndex, 1);
-			allTimestamps.splice(taskIndex, 1);
+				// Array
+				allTasks.splice(taskIndex, 1);
+				allIds.splice(taskIndex, 1);
+				allTimestamps.splice(taskIndex, 1);
 
-			// For debugging
-			// console.log(allTasks);
-			// console.log(allIds);
+				console.log(taskIndex);
+				console.log(allTasks);
+				console.log(allTasks[taskIndex]);
 
-			// Remove from container
-			deleteButton[i].parentElement.remove();
+				// Re-do the local storage
+				localStorage.setItem("tasks", JSON.stringify(allTasks));
+				localStorage.setItem("tasksId", JSON.stringify(allIds));
+				localStorage.setItem("timestamps", JSON.stringify(allTimestamps));
 
-			// Re-do the local storage
-			localStorage.clear();
-			localStorage.setItem("tasks", JSON.stringify(allTasks));
-			localStorage.setItem("tasksId", JSON.stringify(allIds));
-			localStorage.setItem("timestamps", JSON.stringify(allTimestamps));
+				// DOM
+				deleteButton[i].parentElement.remove();
+
+				click = false;
+			}
 		});
 	}
 };
 
+// Complete Task
 function completeTask() {
 	const check = document.querySelectorAll(".checkbox");
 	for (let i = 0; i < check.length; i++) {
 		check[i].addEventListener("click", () => {
-			let checkParentId = check[i].parentElement.id;
-			let checkParentIdInteger = Number(checkParentId);
-			let taskIndex = allIds.indexOf(checkParentIdInteger);
+			if (check[i].checked) {
+				let checkParentId = check[i].parentElement.parentElement.parentElement.id;
+				let checkParentIdInteger = Number(checkParentId);
+				let taskIndex = allIds.indexOf(checkParentIdInteger);
+				// Array
+				allTasks.splice(taskIndex, 1);
+				allIds.splice(taskIndex, 1);
+				allTimestamps.splice(taskIndex, 1);
 
-			check[i].parentElement.style = "text-decoration: line-through; opacity: 50%;";
-			check[i].style = "display:none";
+				// Re-do the local storage
+				// localStorage.clear();
+				localStorage.setItem("tasks", JSON.stringify(allTasks));
+				localStorage.setItem("tasksId", JSON.stringify(allIds));
+				localStorage.setItem("timestamps", JSON.stringify(allTimestamps));
 
-			allTasks.splice(taskIndex, 1);
-			allIds.splice(taskIndex, 1);
-			allTimestamps.splice(taskIndex, 1);
+				// DOM
+				check[i].parentElement.style = "text-decoration: line-through; opacity: 100%;";
+				check[i].parentElement.parentElement.parentElement.style = "background:teal";
+				check[i].parentElement.parentElement.parentElement.querySelector(
+					".ph-trash-fill"
+				).style = "display:none";
+				check[i].style = "display:none";
 
-			// Re-do the local storage
-			localStorage.clear();
-			localStorage.setItem("tasks", JSON.stringify(allTasks));
-			localStorage.setItem("tasksId", JSON.stringify(allIds));
-			localStorage.setItem("timestamps", JSON.stringify(allTimestamps));
+				// set timeout to remove the task from the DOM
+				setTimeout(() => {
+					check[i].parentElement.parentElement.parentElement.remove();
+				}, 700);
+
+				check[i].checked = false;
+			}
 		});
 	}
 }
 
+// Get the task and its info.
 const renderTask = () => {
 	let taskId = Math.floor(Date.now() * Math.random());
 	let time = new Date();
@@ -136,10 +162,11 @@ const renderTask = () => {
 	// Reload these functions
 	clearAllTasks();
 	deleteTask();
+	// checkboxListener();
 	completeTask();
 };
 
-// Event Listeners
+// Event Listener: add task
 pushButton.addEventListener("click", renderTask, false);
 
 // On Load
@@ -153,8 +180,7 @@ if (savedTasks) {
 		allIds = allIds.concat(savedIds);
 		allTimestamps = allTimestamps.concat(savedTimestamps);
 	}
+	clearAllTasks();
+	deleteTask();
+	completeTask();
 }
-
-clearAllTasks();
-deleteTask();
-completeTask();

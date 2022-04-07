@@ -161,7 +161,7 @@ nav {
 .switchTheme figcaption {
 	display: none;
 	position: absolute;
-	font: 0.7rem var(--sans);
+	font: 0.6rem var(--sans);
 	padding: 0.2rem;
 	border-radius: var(--tiny-value);
 	background-color: var(--transparency);

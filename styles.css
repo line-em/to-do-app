@@ -347,6 +347,7 @@ button:hover:enabled {
 	background-color: var(--spacecadet);
 	color: var(--lavender);
 	border: none;
+	cursor: pointer;
 }
 
 nav button:hover:enabled {

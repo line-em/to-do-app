@@ -126,8 +126,7 @@ if (allTasks.length <= 2) {
 	};
 }
 
-pushButton.onclick = () => {
-	// Check if the input is empty
+const checkIfEmpty = () => {
 	if (inputTask.value === "") {
 		infoContainer.innerHTML = `<div class="alert alert-danger">
 			<strong>Error!</strong> You must enter a task.
@@ -152,6 +151,14 @@ pushButton.onclick = () => {
 		inputTask.value = "";
 	}
 };
+
+pushButton.onclick = checkIfEmpty;
+pushButton.onkeydown = (e) => {
+	if (e.key === "Enter") {
+		checkIfEmpty();
+	}
+};
+
 // Helper Functions
 // Create DOM element with task data gotten from the input (renderTask)
 // const createTasks = (task, id, time) => {

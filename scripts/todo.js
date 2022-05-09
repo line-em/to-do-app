@@ -184,3 +184,89 @@ if (savedTasks) {
 	deleteTask();
 	completeTask();
 }
+
+// TRIAL AREA
+
+// const checkboxes = document.querySelectorAll(".checkbox");
+// function checkboxListener() {
+// 	for (let i = 0; i < checkboxes.length; i++) {
+// 		checkboxes[i].addEventListener("change", (e) => {
+// 			if (checkboxes[i].checked) {
+// 				console.log("check");
+// 			} else {
+// 				console.log("uncheck");
+// 			}
+// 		});
+// 	}
+// }
+// console.log("clicked");
+// let taskIndex = allIds.indexOf(e.target.parentElement.id);
+// console.log(taskIndex);
+// redoArrays(taskIndex);
+// 	});
+// }
+
+// checkboxes.forEach((checkbox) => {
+// 	checkbox.addEventListener("click", completeTask);
+// });
+
+// function completeTask() {
+// 	let checkParentId = this.parentElement.parentElement.parentElement.id;
+// 	let checkParentIdInteger = Number(checkParentId);
+// 	let taskIndex = allIds.indexOf(checkParentIdInteger);
+// console.log(taskIndex);
+// console.log(allTasks);
+// console.log(allTasks[taskIndex]);
+// allTasks.splice(taskIndex, 1);
+// allIds.splice(taskIndex, 1);
+// allTimestamps.splice(taskIndex, 1);
+// console.log(allTasks);
+
+// // Re-do the local storage
+// localStorage.setItem("tasks", JSON.stringify(allTasks));
+// localStorage.setItem("tasksId", JSON.stringify(allIds));
+// localStorage.setItem("timestamps", JSON.stringify(allTimestamps));
+
+// 	// DOM
+// 	checkbox.parentElement.style = "text-decoration: line-through; opacity: 50%;";
+// 	checkbox.style = "display:none";
+// }
+
+// for (let i = 0; i < check.length; i++) {
+// 	check[i].addEventListener("click", () => {
+// 		let checkParentId = check[i].parentElement.parentElement.parentElement.id;
+// 		let checkParentIdInteger = Number(checkParentId);
+// 		let taskIndex = allIds.indexOf(checkParentIdInteger);
+// 		console.log(taskIndex);
+// 		console.log(allTasks);
+// 		console.log(allTasks[taskIndex]);
+// 		allTasks.splice(taskIndex, 1);
+// 		allIds.splice(taskIndex, 1);
+// 		allTimestamps.splice(taskIndex, 1);
+// 		console.log(allTasks);
+
+// 		// Re-do the local storage
+// 		localStorage.setItem("tasks", JSON.stringify(allTasks));
+// 		localStorage.setItem("tasksId", JSON.stringify(allIds));
+// 		localStorage.setItem("timestamps", JSON.stringify(allTimestamps));
+
+// 		// DOM
+// 		check[i].parentElement.style = "text-decoration: line-through; opacity: 50%;";
+// 		check[i].style = "display:none";
+// 		return;
+// 	});
+
+// const redoArrays = (taskIndex) => {
+// 	console.log(taskIndex);
+// 	console.log(allTasks);
+// 	console.log(allTasks[taskIndex]);
+// 	allTasks.splice(taskIndex, 1);
+// 	allIds.splice(taskIndex, 1);
+// 	allTimestamps.splice(taskIndex, 1);
+// 	console.log(allTasks);
+
+// 	// Re-do the local storage
+// 	localStorage.setItem("tasks", JSON.stringify(allTasks));
+// 	localStorage.setItem("tasksId", JSON.stringify(allIds));
+// 	localStorage.setItem("timestamps", JSON.stringify(allTimestamps));
+// };

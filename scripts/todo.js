@@ -17,14 +17,6 @@ let allTasks = [];
 let allIds = [];
 let allTimestamps = [];
 
-// Check if there are saved tasks
-if (savedIds && savedTasks && savedTimestamps) {
-	allIds = savedIds;
-	allTasks = savedTasks;
-	allTimestamps = savedTimestamps;
-	renderTasks();
-}
-
 // Class constructor for tasks
 class Task {
 	constructor(id, task, timestamp) {
@@ -52,7 +44,6 @@ class Task {
 		allIds.push(this.id);
 		allTasks.push(this.task);
 		allTimestamps.push(this.timestamp);
-		this.renderTasks();
 	}
 
 	deleteTask() {
@@ -103,6 +94,7 @@ class Task {
 		localStorage.setItem("timestamps", JSON.stringify(allTimestamps));
 		this.addTask();
 		this.deleteTask();
+		this.completeTask();
 	}
 
 	clearAll() {
@@ -114,6 +106,18 @@ class Task {
 		localStorage.removeItem("tasks");
 		localStorage.removeItem("timestamps");
 	}
+}
+
+// Check if there are saved tasks
+if (savedIds && savedTasks && savedTimestamps) {
+	allIds = savedIds;
+	allTasks = savedTasks;
+	allTimestamps = savedTimestamps;
+	// Render tasks from local storage using class constructor
+	allIds.forEach((id) => {
+		const task = new Task(id, allTasks[allIds.indexOf(id)], allTimestamps[allIds.indexOf(id)]);
+		task.addTask();
+	});
 }
 
 if (allTasks.length <= 2) {

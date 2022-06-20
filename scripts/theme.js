@@ -6,8 +6,12 @@ const caption = document.querySelectorAll("figcaption");
 const userTheme =
 	localStorage.getItem("data-theme") ||
 	(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-if (userTheme) {
-	document.documentElement.setAttribute("data-theme", userTheme);
+
+function switchTheme(activeButton, inactiveButton, mode) {
+	document.documentElement.setAttribute("data-theme", mode);
+	activeButton.disabled = true;
+	inactiveButton.disabled = false;
+	localStorage.setItem("data-theme", mode);
 }
 
 function showThemeLabels(icon) {
@@ -24,15 +28,20 @@ function showThemeLabels(icon) {
 	});
 }
 
-function switchTheme(activeButton, inactiveButton, mode) {
-	activeButton.addEventListener("click", function () {
-		document.documentElement.setAttribute("data-theme", mode);
-		activeButton.disabled = true;
-		inactiveButton.disabled = false;
-		localStorage.setItem("data-theme", mode);
-	});
-}
+// Buttons
+
+nightButton.addEventListener("click", function () {
+	switchTheme(nightButton, dayButton, "dark");
+});
+
+dayButton.addEventListener("click", function () {
+	switchTheme(dayButton, nightButton, "light");
+});
+
+// On Page Load
+
+userTheme === "dark"
+	? switchTheme(nightButton, dayButton, "dark")
+	: switchTheme(dayButton, nightButton, "light");
 
 showThemeLabels(themeLabels);
-switchTheme(nightButton, dayButton, "dark");
-switchTheme(dayButton, nightButton, "light");

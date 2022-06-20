@@ -19,34 +19,102 @@ let allTimestamps = [];
 
 // Class constructor for tasks
 class Task {
-	constructor(id, task, timestamp) {
-		this.id = id;
-		this.task = task;
-		this.timestamp = timestamp;
-		this.isComplete = false;
-	}
-	addTask() {
-		const task = document.createElement("li");
-		tasksContainer.appendChild(task);
-		task.id = this.id;
-		task.innerHTML = `
-		<div>
-			<label class="tasks" for="${this.id}">
-				<input class="jello checkbox" type="checkbox" name="checkbox" id="${this.id}" />
-				${this.task}
-			</label>
-			<p class="time"><i class="ph-clock-fill"></i>
-				${this.timestamp}
-			</p>
-		</div>
-		<i class="ph-trash-fill jello"></i>`;
-		// local storage
-		allIds.push(this.id);
-		allTasks.push(this.task);
-		allTimestamps.push(this.timestamp);
+	// constructor(id, task, timestamp) {
+	// 	this.id = id;
+	// 	this.task = task;
+	// 	this.timestamp = timestamp;
+	// 	this.isComplete = false;
+	// }
+
+	constructor() {
+		this.task = JSON.parse(localStorage.getItem("tasks") || "[]");
 	}
 
-	deleteTask() {
+	timeStamp() {
+		return new Date().toLocaleString("en-US", {
+			weekday: "short",
+			month: "short",
+			day: "numeric",
+			year: "numeric",
+			hour: "numeric",
+			minute: "numeric"
+		});
+	}
+
+	id() {
+		return ~~(Date.now() * Math.random());
+		// return Math.floor(Date.now() * Math.random())
+	}
+
+	addTask() {
+		this.task = this.task.concat({
+			name: inputTask.value,
+			id: this.id(),
+			timeStamp: this.timeStamp(),
+			isComplete: false
+		});
+	}
+
+	render(tasksContainer) {
+		this.task.forEach((task) => {
+			let individualTask = document.createElement("li");
+			individualTask.innerHTML = `
+		<div>
+			<label class="tasks" for="${task.id}">
+				<input id="${task.id}" class="jello checkbox" type="checkbox" name="checkbox" ${
+				task.isComplete ? "checked" : ""
+			} />
+				${task.name}
+			</label>
+			<p class="time"><i class="ph-clock-fill"></i>
+				${task.timestamp}
+			</p>
+		</div>
+		<i class="ph-trash-fill jello deleteThis" id="${task.id}" onClick="${deleteTask}"></i>`;
+			tasksContainer.appendChild(individualTask);
+		});
+	}
+
+	deleteTask(target) {
+		// Filter out the task that was clicked
+		this.task = this.task.filter((task) => task.id !== target.id);
+		// Save the new task list
+		localStorage.setItem("tasks", JSON.stringify(this.task));
+		// Remove the task from the DOM
+		target.parentElement.remove();
+	}
+
+	// renderTasks() {
+	// 	localStorage.setItem("tasksId", JSON.stringify(allIds));
+	// 	localStorage.setItem("tasks", JSON.stringify(allTasks));
+	// 	localStorage.setItem("timestamps", JSON.stringify(allTimestamps));
+	// 	this.addTask();
+	// 	this.deleteTask();
+	// 	this.completeTask();
+	// }
+
+	// addTask() {
+	// const task = document.createElement("li");
+	// tasksContainer.appendChild(task);
+	// task.id = this.id;
+	// task.innerHTML = `
+	// <div>
+	// 	<label class="tasks" for="${this.id}">
+	// 		<input class="jello checkbox" type="checkbox" name="checkbox" id="${this.id}" />
+	// 		${this.task}
+	// 	</label>
+	// 	<p class="time"><i class="ph-clock-fill"></i>
+	// 		${this.timestamp}
+	// 	</p>
+	// </div>
+	// <i class="ph-trash-fill jello"></i>`;
+	// 	// local storage
+	// 	allIds.push(this.id);
+	// 	allTasks.push(this.task);
+	// 	allTimestamps.push(this.timestamp);
+	// }
+
+	deleteTask2() {
 		const deleteButton = document.querySelectorAll(".ph-trash-fill");
 		const task = document.getElementById(this.id);
 		task.remove();
@@ -88,15 +156,6 @@ class Task {
 		this.renderTasks();
 	}
 
-	renderTasks() {
-		localStorage.setItem("tasksId", JSON.stringify(allIds));
-		localStorage.setItem("tasks", JSON.stringify(allTasks));
-		localStorage.setItem("timestamps", JSON.stringify(allTimestamps));
-		this.addTask();
-		this.deleteTask();
-		this.completeTask();
-	}
-
 	clearAll() {
 		tasksContainer.innerHTML = "";
 		allIds = [];
@@ -107,6 +166,16 @@ class Task {
 		localStorage.removeItem("timestamps");
 	}
 }
+
+const createTask = function (event) {
+	if (event.keyCode === 13 || event.type === "click") {
+		event.preventDefault();
+		newTask.addTask();
+		newTask.render(tasksContainer);
+		inputTask.value = "";
+		localStorage.setItem("tasks", JSON.stringify(newTask.task));
+	}
+};
 
 // Check if there are saved tasks
 if (savedIds && savedTasks && savedTimestamps) {

@@ -2,86 +2,80 @@
 const tasksContainer = document.getElementById("listTasks");
 const infoContainer = document.querySelector(".alerts");
 const inputTask = document.getElementById("typetask");
+
 // Event Listeners
 const pushButton = document.getElementById("addtask");
 const clearAllButton = document.querySelector(".clearAll");
+// inputTask.addEventListener("keypress", enterTask);
 
 // Local Storage
-const savedIds = JSON.parse(localStorage.getItem("tasksId"));
 const savedTasks = JSON.parse(localStorage.getItem("tasks"));
-const savedTimestamps = JSON.parse(localStorage.getItem("timestamps"));
 
 // Other Variables
 // Store tasks and their info.
-let allTasks = [];
-let allIds = [];
-let allTimestamps = [];
+// let allTasks = [];
 
 // Class constructor for tasks
-class Task {
-	// constructor(id, task, timestamp) {
-	// 	this.id = id;
-	// 	this.task = task;
-	// 	this.timestamp = timestamp;
-	// 	this.isComplete = false;
-	// }
-
+class Tasks {
 	constructor() {
-		this.task = JSON.parse(localStorage.getItem("tasks") || "[]");
-	}
-
-	timeStamp() {
-		return new Date().toLocaleString("en-US", {
-			weekday: "short",
-			month: "short",
-			day: "numeric",
-			year: "numeric",
-			hour: "numeric",
-			minute: "numeric"
-		});
-	}
-
-	id() {
-		return ~~(Date.now() * Math.random());
-		// return Math.floor(Date.now() * Math.random())
+		this.task = JSON.parse(localStorage.getItem("tasks")) || [];
 	}
 
 	addTask() {
 		this.task = this.task.concat({
-			name: inputTask.value,
-			id: this.id(),
-			timeStamp: this.timeStamp(),
-			isComplete: false
+			id: ~~(Date.now() * Math.random()),
+			input: inputTask.value,
+			isCompleted: false,
+			timestamp: new Date().toLocaleString("en-US", {
+				weekday: "short",
+				month: "short",
+				day: "numeric",
+				year: "numeric",
+				hour: "numeric",
+				minute: "numeric"
+			})
 		});
 	}
+
+	// deleteTask(target) {
+	// 	// Filter out the task that was clicked
+	// 	this.task = this.task.filter((task) => task.id !== target.id);
+	// 	// Save the new task list
+	// 	localStorage.setItem("tasks", JSON.stringify(this.task));
+	// 	// Remove the task from the DOM
+	// 	target.parentElement.remove();
+	// }
 
 	render(tasksContainer) {
-		this.task.forEach((task) => {
-			let individualTask = document.createElement("li");
-			individualTask.innerHTML = `
-		<div>
-			<label class="tasks" for="${task.id}">
-				<input id="${task.id}" class="jello checkbox" type="checkbox" name="checkbox" ${
-				task.isComplete ? "checked" : ""
-			} />
-				${task.name}
-			</label>
-			<p class="time"><i class="ph-clock-fill"></i>
-				${task.timestamp}
-			</p>
-		</div>
-		<i class="ph-trash-fill jello deleteThis" id="${task.id}" onClick="${deleteTask}"></i>`;
-			tasksContainer.appendChild(individualTask);
-		});
+		tasksContainer.innerHTML = this.task
+			.map((task) => {
+				return `
+				<li>
+				<div>
+					<label class="tasks" for="${task.id}">
+						<input id="${task.id}" class="jello checkbox" type="checkbox" name="checkbox" ${
+					task.isComplete ? "checked" : ""
+				} />
+						${task.input}
+					</label>
+					<p class="time"><i class="ph-clock-fill"></i>
+						${task.timestamp}
+					</p></div>
+					<i class="ph-trash-fill jello deleteThis" id="${task.id}" onClick=""></i>
+				</li>
+			`;
+			})
+			.join("");
+		this.showClearAll();
+		localStorage.setItem("tasks", JSON.stringify(this.task));
 	}
 
-	deleteTask(target) {
-		// Filter out the task that was clicked
-		this.task = this.task.filter((task) => task.id !== target.id);
-		// Save the new task list
-		localStorage.setItem("tasks", JSON.stringify(this.task));
-		// Remove the task from the DOM
-		target.parentElement.remove();
+	showClearAll() {
+		if (this.task.length < 2) {
+			clearAllButton.style.display = "none";
+		} else {
+			clearAllButton.style.display = "block";
+		}
 	}
 
 	// renderTasks() {
@@ -114,123 +108,93 @@ class Task {
 	// 	allTimestamps.push(this.timestamp);
 	// }
 
-	deleteTask2() {
-		const deleteButton = document.querySelectorAll(".ph-trash-fill");
-		const task = document.getElementById(this.id);
-		task.remove();
-		deleteButton.forEach((button) => {
-			button.addEventListener("click", () => {
-				button.parentElement.parentElement.remove();
-			});
-		});
-		allIds.splice(allIds.indexOf(this.id), 1);
-		allTasks.splice(allTasks.indexOf(this.task), 1);
-		allTimestamps.splice(allTimestamps.indexOf(this.timestamp), 1);
-		this.renderTasks();
-	}
-
-	//Not revised
-	completeTask() {
-		const checkbox = document.querySelectorAll(".checkbox");
-		checkbox.forEach((checkbox) => {
-			checkbox.addEventListener("click", () => {
-				if (checkbox.checked) {
-					checkbox.parentElement.classList.add("complete");
-					this.isComplete = true;
-				} else {
-					checkbox.parentElement.classList.remove("complete");
-				}
-			});
-		});
-		parentElement.style = "text-decoration: line-through; opacity: 100%;";
-		// 				check[i].parentElement.parentElement.parentElement.style = "background:teal";
-		// 				check[i].parentElement.parentElement.parentElement.querySelector(
-		// 					".ph-trash-fill"
-		// 				).style = "display:none";
-		// 				check[i].style = "display:none";
-
-		// 				// set timeout to remove the task from the DOM
-		// 				setTimeout(() => {
-		// 					check[i].parentElement.parentElement.parentElement.remove();
-		// 				}, 700);
-		this.renderTasks();
-	}
-
-	clearAll() {
-		tasksContainer.innerHTML = "";
-		allIds = [];
-		allTasks = [];
-		allTimestamps = [];
-		localStorage.removeItem("tasksId");
-		localStorage.removeItem("tasks");
-		localStorage.removeItem("timestamps");
-	}
+	// deleteTask2() {
+	// 	const deleteButton = document.querySelectorAll(".ph-trash-fill");
+	// 	const task = document.getElementById(this.id);
+	// 	task.remove();
+	// 	deleteButton.forEach((button) => {
+	// 		button.addEventListener("click", () => {
+	// 			button.parentElement.parentElement.remove();
+	// 		});
+	// 	});
+	// 	allIds.splice(allIds.indexOf(this.id), 1);
+	// 	allTasks.splice(allTasks.indexOf(this.task), 1);
+	// 	allTimestamps.splice(allTimestamps.indexOf(this.timestamp), 1);
+	// 	this.renderTasks();
+	// }
 }
 
-const createTask = function (event) {
-	if (event.keyCode === 13 || event.type === "click") {
-		event.preventDefault();
-		newTask.addTask();
-		newTask.render(tasksContainer);
-		inputTask.value = "";
-		localStorage.setItem("tasks", JSON.stringify(newTask.task));
-	}
-};
+const newTask = new Tasks();
 
-// Check if there are saved tasks
-if (savedIds && savedTasks && savedTimestamps) {
-	allIds = savedIds;
-	allTasks = savedTasks;
-	allTimestamps = savedTimestamps;
-	// Render tasks from local storage using class constructor
-	allIds.forEach((id) => {
-		const task = new Task(id, allTasks[allIds.indexOf(id)], allTimestamps[allIds.indexOf(id)]);
-		task.addTask();
-	});
+if (savedTasks) {
+	newTask.task = savedTasks;
+	newTask.render(tasksContainer);
 }
 
-if (allTasks.length <= 2) {
-	clearAllButton.style.display = "none";
-} else {
-	clearAllButton.style.display = "block";
-	clearAllButton.onclick = () => {
-		clearAllButton.style.display = "none";
-		Task.clearAll();
-	};
-}
-
-const checkIfEmpty = () => {
+const enterTask = (e) => {
+	e.preventDefault();
 	if (inputTask.value === "") {
-		infoContainer.innerHTML = `<div class="alert alert-danger">
-			<strong>Error!</strong> You must enter a task.
-		</div>`;
+		infoContainer.innerHTML = `<div class="alert alert-danger" role="alert"><strong>Error!</strong> You must enter a task.</div>`;
 		infoContainer.style.display = "block";
 	} else {
-		infoContainer.style.display = "none";
-		const id = Math.floor(Date.now() * Math.random());
-		const task = new Task(
-			id,
-			inputTask.value,
-			new Date().toLocaleString("en-US", {
-				weekday: "short",
-				month: "short",
-				day: "numeric",
-				year: "numeric",
-				hour: "numeric",
-				minute: "numeric"
-			})
-		);
-		task.addTask();
+		newTask.addTask();
 		inputTask.value = "";
+		infoContainer.style.display = "none";
+		localStorage.setItem("tasks", JSON.stringify(newTask.task));
+		newTask.render(tasksContainer);
 	}
 };
 
-pushButton.onclick = checkIfEmpty;
-pushButton.onkeydown = (e) => {
-	if (e.key === "Enter") {
-		checkIfEmpty();
-	}
+const clearAll = () => {
+	newTask.task = [];
+	localStorage.setItem("tasks", JSON.stringify(newTask.task));
+	newTask.render(tasksContainer);
 };
+pushButton.addEventListener("click", enterTask);
+clearAllButton.addEventListener("click", clearAll);
+
+// const createTask = function (event) {
+// 	if (event.keyCode === 13 || event.type === "click") {
+// 		event.preventDefault();
+// 		newTask.addTask();
+// 		newTask.render(tasksContainer);
+// 		inputTask.value = "";
+// 		localStorage.setItem("tasks", JSON.stringify(newTask.task));
+// 	}
+// };
+
+// const checkIfEmpty = () => {
+// 	if (inputTask.value === "") {
+// 		infoContainer.innerHTML = `<div class="alert alert-danger">
+// 			<strong>Error!</strong> You must enter a task.
+// 		</div>`;
+// 		infoContainer.style.display = "block";
+// 	} else {
+// 		infoContainer.style.display = "none";
+// 		const id = Math.floor(Date.now() * Math.random());
+// 		const task = new Task(
+// 			id,
+// 			inputTask.value,
+// 			new Date().toLocaleString("en-US", {
+// 				weekday: "short",
+// 				month: "short",
+// 				day: "numeric",
+// 				year: "numeric",
+// 				hour: "numeric",
+// 				minute: "numeric"
+// 			})
+// 		);
+// 		task.addTask();
+// 		inputTask.value = "";
+// 	}
+// };
+
+// pushButton.onclick = checkIfEmpty;
+// pushButton.onkeydown = (e) => {
+// 	if (e.key === "Enter") {
+// 		checkIfEmpty();
+// 	}
+// };
 
 // Helper Functions
 // Create DOM element with task data gotten from the input (renderTask)

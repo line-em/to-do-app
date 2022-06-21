@@ -27,12 +27,12 @@ class Tasks {
 				day: "numeric",
 				year: "numeric",
 				hour: "numeric",
-				minute: "numeric"
+				minute: "numeric",
+				second: "numeric"
 			})
 		});
-
-		// TODO: Sort by Timestamp
-
+		// Latest task at the top
+		this.task.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 		this.render(tasksContainer);
 	}
 

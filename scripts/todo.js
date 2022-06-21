@@ -42,7 +42,6 @@ class Tasks {
 
 	render(tasksContainer) {
 		// Different style for completed tasks
-		const completedTasks = this.task.filter((task) => task.isComplete);
 		tasksContainer.innerHTML = this.task
 			.map((task) => {
 				return `
@@ -63,7 +62,7 @@ class Tasks {
 			})
 			.join("");
 		this.showClearAll();
-		this.showFilters();
+		showFilterButtons();
 		localStorage.setItem("tasks", JSON.stringify(this.task));
 
 		// Event Listeners
@@ -85,15 +84,24 @@ class Tasks {
 			clearAllButton.style.display = "block";
 		}
 	}
-
-	showFilters() {
-		if (this.task.some((task) => task.isComplete)) {
-			filterElement.style.display = "flex";
-		} else {
-			filterElement.style.display = "none";
-		}
-	}
 }
+
+// TODO: Switch All / Completed / To-do
+// TODO: Edit Task
+
+const enterTask = (e) => {
+	e.preventDefault();
+	if (inputTask.value === "") {
+		infoContainer.innerHTML = `<div class="alert alert-danger" role="alert"><strong>Error!</strong> You must enter a task.</div>`;
+		infoContainer.style.display = "block";
+	} else {
+		newTask.addTask();
+		inputTask.value = "";
+		infoContainer.style.display = "none";
+		localStorage.setItem("tasks", JSON.stringify(newTask.task));
+		newTask.render(tasksContainer);
+	}
+};
 
 deleteTask = (e) => {
 	let deleteId = e.target.id.slice(6);
@@ -110,11 +118,27 @@ completeTask = (e) => {
 	localStorage.setItem("tasks", JSON.stringify(newTask.task));
 	newTask.render(tasksContainer);
 };
-// TODO: Switch All / Completed / To-do
-// TODO: Edit Task
 
+const clearAll = () => {
+	newTask.task = [];
+	localStorage.setItem("tasks", JSON.stringify(newTask.task));
+	newTask.render(tasksContainer);
+};
+
+const showFilterButtons = () => {
+	if (newTask.task.length !== 0) {
+		filterElement.style.display = "flex";
+	} else {
+		filterElement.style.display = "none";
+	}
+};
+
+// Initialize tasks
 const newTask = new Tasks();
+let activeTasks = new Tasks();
+let completeTasks = new Tasks();
 
+// on page load, check these conditions
 if (savedTasks) {
 	newTask.task = savedTasks;
 	newTask.render(tasksContainer);
@@ -124,25 +148,20 @@ if (newTask.task.length !== 0) {
 	infoContainer.style.display = "none";
 }
 
-const enterTask = (e) => {
-	e.preventDefault();
-	if (inputTask.value === "") {
-		infoContainer.innerHTML = `<div class="alert alert-danger" role="alert"><strong>Error!</strong> You must enter a task.</div>`;
-		infoContainer.style.display = "block";
-	} else {
-		newTask.addTask();
-		inputTask.value = "";
-		infoContainer.style.display = "none";
-		localStorage.setItem("tasks", JSON.stringify(newTask.task));
-		newTask.render(tasksContainer);
-	}
-};
-
-const clearAll = () => {
-	newTask.task = [];
-	localStorage.setItem("tasks", JSON.stringify(newTask.task));
-	newTask.render(tasksContainer);
-};
-
+// Adding all the event listeners
 pushButton.addEventListener("click", enterTask);
 clearAllButton.addEventListener("click", clearAll);
+
+showActiveButton.addEventListener("click", () => {
+	activeTasks.task = newTask.task.filter((task) => !task.isComplete);
+	activeTasks.render(tasksContainer);
+});
+
+showCompleteButton.addEventListener("click", () => {
+	completeTasks.task = newTask.task.filter((task) => task.isComplete);
+	completeTasks.render(tasksContainer);
+});
+
+showAllButton.addEventListener("click", () => {
+	newTask.render(tasksContainer);
+});

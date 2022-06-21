@@ -107,6 +107,10 @@ if (savedTasks) {
 	newTask.render(tasksContainer);
 }
 
+if (newTask.task.length !== 0) {
+	infoContainer.style.display = "none";
+}
+
 const enterTask = (e) => {
 	e.preventDefault();
 	if (inputTask.value === "") {

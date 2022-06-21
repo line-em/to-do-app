@@ -76,7 +76,7 @@
 
 :root {
 	--spacecadet: #28283e;
-	--redsalsa: #cc3134;
+	--redsalsa: #b21d20;
 	--lavender: #e7dada;
 	--mirtilo: #6161a8;
 	--transparency: rgba(240, 240, 240, 0.287);
@@ -148,8 +148,16 @@ nav {
 	justify-content: center;
 	align-items: center;
 	flex: 1 1 auto;
-	margin: var(--large-value) auto;
+	margin: var(--large-value) auto var(--tiny-value) auto;
 	max-width: 60ch;
+}
+
+.filter-buttons {
+	max-width: 50ch;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	margin: var(--base-value) auto;
 }
 
 .inputTasks {
@@ -174,17 +182,19 @@ nav {
 
 /* container styling */
 
-.clearAll {
-	margin: var(--base-value) auto;
+.clearAll,
+.filter {
 	background-color: var(--transparency);
 	color: var(--redsalsa);
-	border: 1px var(--redsalsa) solid;
 	padding: var(--tiny-value);
 	border-radius: var(--tiny-value);
-	display: flex;
-	align-items: center;
 	font: 0.9rem var(--sans);
-	width: fit-content;
+}
+
+.clearAll {
+	margin: var(--base-value) auto 0 auto;
+	border: 1px var(--redsalsa) solid;
+	display: flex;
 }
 
 .iconNight,
@@ -203,7 +213,7 @@ nav {
 	border-radius: var(--tiny-value);
 	background-color: var(--redsalsa);
 	color: var(--lavender);
-	font-size: 0.85rem;
+	font-size: 0.95rem;
 	width: fit-content;
 	margin: var(--base-value) auto;
 	padding: var(--tiny-value);
@@ -217,12 +227,17 @@ nav {
 	vertical-align: sub;
 }
 
-.ph-clock-fill {
+.ph-clock-fill,
+.ph-x-square-fill {
 	display: inline;
 	color: var(--mirtilo);
 	font-size: 0.9rem;
 	padding-bottom: 0.15rem;
 	vertical-align: middle;
+}
+
+.ph-x-square-fill {
+	color: var(--redsalsa);
 }
 
 h1::before,
@@ -239,7 +254,6 @@ h1::before {
 }
 
 .alerts::before {
-	margin-inline-end: 0.2rem;
 	content: "\f478";
 	font: 1rem "Phosphor";
 }

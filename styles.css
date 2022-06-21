@@ -261,8 +261,9 @@ h1::before {
 	font: 1rem "Phosphor";
 }
 
-.ph-trash-fill {
-	margin-inline-end: 0.2rem;
+.ph-trash-fill,
+.ph-pencil-bold {
+	margin: 0.2rem;
 	content: "\fe30";
 	font: 1.2rem "Phosphor";
 	vertical-align: middle;
@@ -339,6 +340,10 @@ input[type="text"]:focus {
 	color: var(--lavender);
 }
 
+abbr {
+	text-decoration: none;
+}
+
 label {
 	cursor: pointer;
 	font: 500 1rem var(--sans);
@@ -360,7 +365,8 @@ nav button {
 
 /* hover */
 
-.ph-trash-fill:hover {
+.ph-trash-fill:hover,
+.ph-pencil-bold:hover {
 	color: var(--mirtilo);
 	box-shadow: 0.1rem 0.1rem 3rem var(--transparency-2);
 	cursor: pointer;

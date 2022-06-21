@@ -55,8 +55,16 @@ class Tasks {
 					</label>
 					<p class="time"><i class="ph-clock-fill"></i>
 						${task.timestamp}
-					</p></div>
-					<i class="ph-trash-fill jello deleteThis" id="delete${task.id}"></i>
+					</p>
+				</div>
+				<div>
+					<abbr title="edit task">
+						<i class="ph-pencil-bold jello editThis" alt="edit task"></i>
+					</abbr>
+					<abbr title="delete task">
+						<i class="ph-trash-fill jello deleteThis" id="delete${task.id}" alt="delete task"></i>
+					</abbr>
+				</div>
 				</li>
 			`;
 			})

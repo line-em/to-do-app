@@ -2,10 +2,14 @@
 const tasksContainer = document.getElementById("listTasks");
 const infoContainer = document.querySelector(".alerts");
 const inputTask = document.getElementById("typetask");
+const filterElement = document.getElementById("filter-buttons");
 
 // Event Listeners
 const pushButton = document.getElementById("addtask");
 const clearAllButton = document.querySelector(".clearAll");
+const showAllButton = document.getElementById("show-all");
+const showCompleteButton = document.getElementById("show-complete");
+const showActiveButton = document.getElementById("show-active");
 
 // Local Storage
 const savedTasks = JSON.parse(localStorage.getItem("tasks"));
@@ -59,6 +63,7 @@ class Tasks {
 			})
 			.join("");
 		this.showClearAll();
+		this.showFilters();
 		localStorage.setItem("tasks", JSON.stringify(this.task));
 
 		// Event Listeners
@@ -78,6 +83,14 @@ class Tasks {
 			clearAllButton.style.display = "none";
 		} else {
 			clearAllButton.style.display = "block";
+		}
+	}
+
+	showFilters() {
+		if (this.task.some((task) => task.isComplete)) {
+			filterElement.style.display = "flex";
+		} else {
+			filterElement.style.display = "none";
 		}
 	}
 }

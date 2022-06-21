@@ -20,7 +20,7 @@ class Tasks {
 		this.task = this.task.concat({
 			id: ~~(Date.now() * Math.random()),
 			input: inputTask.value,
-			isCompleted: false,
+			isComplete: false,
 			timestamp: new Date().toLocaleString("en-US", {
 				weekday: "short",
 				month: "short",
@@ -30,10 +30,15 @@ class Tasks {
 				minute: "numeric"
 			})
 		});
+
+		// TODO: Sort by Timestamp
+
 		this.render(tasksContainer);
 	}
 
 	render(tasksContainer) {
+		// Different style for completed tasks
+		const completedTasks = this.task.filter((task) => task.isComplete);
 		tasksContainer.innerHTML = this.task
 			.map((task) => {
 				return `
@@ -55,9 +60,16 @@ class Tasks {
 			.join("");
 		this.showClearAll();
 		localStorage.setItem("tasks", JSON.stringify(this.task));
+
+		// Event Listeners
 		const deleteButtons = document.querySelectorAll(".deleteThis");
 		deleteButtons.forEach((button) => {
 			button.addEventListener("click", deleteTask);
+		});
+
+		const checkboxes = document.querySelectorAll(".checkbox");
+		checkboxes.forEach((checkbox) => {
+			checkbox.addEventListener("click", completeTask);
 		});
 	}
 
@@ -77,6 +89,16 @@ deleteTask = (e) => {
 	localStorage.setItem("tasks", JSON.stringify(newTask.task));
 	newTask.render(tasksContainer);
 };
+
+completeTask = (e) => {
+	let checkboxId = e.target.id;
+	let taskToComplete = newTask.task.find((task) => task.id === +checkboxId);
+	taskToComplete.isComplete = !taskToComplete.isComplete;
+	localStorage.setItem("tasks", JSON.stringify(newTask.task));
+	newTask.render(tasksContainer);
+};
+// TODO: Switch All / Completed / To-do
+// TODO: Edit Task
 
 const newTask = new Tasks();
 

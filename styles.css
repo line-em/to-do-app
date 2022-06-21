@@ -79,8 +79,10 @@
 	--redsalsa: #b21d20;
 	--lavender: #e7dada;
 	--mirtilo: #6161a8;
+	--green: #007c48;
 	--transparency: rgba(240, 240, 240, 0.287);
 	--transparency-2: #28283ebb;
+	--transparency-3: #28283e41;
 	--serif: "Fraunces", serif;
 	--sans: Quicksand, sans-serif;
 	--tiny-value: 0.5rem;
@@ -101,6 +103,7 @@
 [data-theme="dark"] {
 	--spacecadet: #e7dada;
 	--lavender: #28283e;
+	--green: #4bd391;
 	--transparency: #28283ebb;
 	--transparency-2: rgba(240, 240, 240, 0.287);
 	--gradient: linear-gradient(
@@ -294,6 +297,11 @@ li {
 	justify-content: space-between;
 }
 
+li:hover {
+	background-color: var(--transparency-3);
+	transition: 300ms ease;
+}
+
 .time {
 	border-radius: var(--base-value);
 	margin-top: var(--tiny-value);
@@ -322,7 +330,8 @@ input[type="checkbox"] {
 	width: 1.2rem;
 	height: 1.2rem;
 	vertical-align: bottom;
-	accent-color: var(--redsalsa);
+	accent-color: var(--green);
+	/* accent-color: var(--redsalsa); */
 }
 
 input[type="text"]:focus {
@@ -342,7 +351,7 @@ button {
 	border: none;
 	background-color: var(--mirtilo);
 	color: var(--lavender);
-	transition: 400ms ease;
+	transition: 300ms ease;
 }
 
 nav button {
@@ -387,6 +396,14 @@ nav button:disabled {
 
 .flow > * + * {
 	margin-top: 0.8rem;
+}
+
+.complete {
+	border: var(--green) 1px solid;
+}
+
+.complete label {
+	text-decoration: line-through;
 }
 
 @media screen and (max-width: 600px) {

@@ -61,8 +61,19 @@ class Tasks {
 			`;
 			})
 			.join("");
+
+		// isComplete class check
+		for (let i = 0; i < this.task.length; i++) {
+			if (this.task[i].isComplete) {
+				tasksContainer.children[i].classList.toggle("complete");
+			}
+		}
+
+		// Activate Buttons
 		this.showClearAll();
 		showFilterButtons();
+
+		// Set to local storage
 		localStorage.setItem("tasks", JSON.stringify(this.task));
 
 		// Event Listeners
@@ -112,10 +123,12 @@ deleteTask = (e) => {
 };
 
 completeTask = (e) => {
+	let taskElement = e.target.parentElement.parentElement.parentElement;
 	let checkboxId = e.target.id;
 	let taskToComplete = newTask.task.find((task) => task.id === +checkboxId);
 	taskToComplete.isComplete = !taskToComplete.isComplete;
 	localStorage.setItem("tasks", JSON.stringify(newTask.task));
+	// toggle class complete
 	newTask.render(tasksContainer);
 };
 

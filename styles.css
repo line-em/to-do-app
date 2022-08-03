@@ -79,10 +79,10 @@
 	--redsalsa: #b21d20;
 	--lavender: #e7dada;
 	--mirtilo: #6161a8;
-	--green: #007c48;
+	--green: #0f6d46;
 	--transparency: rgba(240, 240, 240, 0.287);
 	--transparency-2: #28283ebb;
-	--transparency-3: #28283e41;
+	--transparency-3: #28283e2f;
 	--serif: "Fraunces", serif;
 	--sans: Quicksand, sans-serif;
 	--tiny-value: 0.5rem;
@@ -410,6 +410,20 @@ nav button:disabled {
 
 .complete label {
 	text-decoration: line-through;
+}
+
+/* tooltip */
+.tooltip {
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted var(--mirtilo);
+}
+
+.tooltip:hover:after {
+	background-color: var(--spacecadet);
+	border-radius: var(--tiny-value);
+	color: var(--lavender);
+	content: attr(title);
 }
 
 @media screen and (max-width: 600px) {

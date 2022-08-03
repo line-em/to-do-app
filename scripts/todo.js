@@ -60,6 +60,7 @@ class Tasks {
 				<div>
 					<abbr title="edit task">
 						<i class="ph-pencil-bold jello editThis" alt="edit task"></i>
+						<span class="tooltip">Edit</span>
 					</abbr>
 					<abbr title="delete task">
 						<i class="ph-trash-fill jello deleteThis" id="delete${task.id}" alt="delete task"></i>
@@ -90,9 +91,14 @@ class Tasks {
 			button.addEventListener("click", deleteTask);
 		});
 
+		const editButtons = document.querySelectorAll(".editThis");
+		editButtons.forEach((button) => {
+			button.addEventListener("click", editTask);
+		});
+
 		const checkboxes = document.querySelectorAll(".checkbox");
 		checkboxes.forEach((checkbox) => {
-			checkbox.addEventListener("click", completeTask);
+			checkbox.addEventListener("click", finishTask);
 		});
 	}
 
@@ -122,7 +128,7 @@ const enterTask = (e) => {
 	}
 };
 
-deleteTask = (e) => {
+const deleteTask = (e) => {
 	let deleteId = e.target.id.slice(6);
 	let taskToDelete = newTask.task.find((task) => task.id === +deleteId);
 	newTask.task.splice(newTask.task.indexOf(taskToDelete), 1);
@@ -130,14 +136,36 @@ deleteTask = (e) => {
 	newTask.render(tasksContainer);
 };
 
-completeTask = (e) => {
-	let taskElement = e.target.parentElement.parentElement.parentElement;
+const finishTask = (e) => {
 	let checkboxId = e.target.id;
 	let taskToComplete = newTask.task.find((task) => task.id === +checkboxId);
 	taskToComplete.isComplete = !taskToComplete.isComplete;
 	localStorage.setItem("tasks", JSON.stringify(newTask.task));
 	// toggle class complete
 	newTask.render(tasksContainer);
+};
+
+const editTask = function (event) {
+	console.log(event.target);
+	const editInput = document.createElement("input");
+	editInput.type = "text";
+	editInput.classList.add("editInput");
+	editInput.value = event.target.parentNode.previousElementSibling.innerText;
+	// li.replaceChild(editInput, p);
+	// editInput.value = t.name;
+	// editInput.focus();
+	// editInput.addEventListener("keyup", (event) => {
+	// 	if (event.keyCode == 13) {
+	// 		t.name = editInput.value;
+	// 		localStorage.setItem("data", JSON.stringify(newtodo.todo));
+	// 		newtodo.render(ul);
+	// 	}
+	// });
+	// editInput.addEventListener("blur", (event) => {
+	// 	t.name = editInput.value;
+	// 	localStorage.setItem("data", JSON.stringify(newtodo.todo));
+	// 	newtodo.render(ul);
+	// });
 };
 
 const clearAll = () => {

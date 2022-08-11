@@ -1,3 +1,9 @@
+# Please refer to the updated version, [here](https://github.com/line-em/react-to-do).🥳
+
+```
+⚠️ This project is now archived in favor of the updated one, and will not be updated.
+```
+
 # To-do App
 
 I'm working on a basic To-do app, for study! 🎉
@@ -22,6 +28,7 @@ Currently I'm using splice() to manage the array, but, although it works on a vi
 -   1.0 - Initial commit.
 -   2.0 - Functional Complete Tasks and Remove Tasks.
 -   2.5 - Added Timestamp to Tasks.
+-   3.0 - Archived project in favor of the updated one.
 
 ## To-do
 
